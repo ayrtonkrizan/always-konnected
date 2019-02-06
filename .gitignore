@@ -1,4 +1,5 @@
 node_modules
-client/node_modules
-server/node_modules
-js/private
+public/node_modules
+functions/node_modules
+public/private
+functions/private
