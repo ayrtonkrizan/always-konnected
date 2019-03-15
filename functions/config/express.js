@@ -1,5 +1,3 @@
-/* Código simplório, apenas para fornecer o serviço para a aplicação */
-
 var express = require('express')
     ,app = express()
     ,routes = require('../app/routes')
@@ -9,13 +7,15 @@ var express = require('express')
 app.use(cors({ origin: true }));
 app.use(bodyParser.json());
 
-app.use(function(req, res, next){
+routes(app);
+
+app.use((req, res, next) => {
     res.status(404);
-  
+    console.error('Erro', '404');
     // respond with html page
     if (req.accepts('html')) {
       //res.render('404', { url: req.url });
-      res.redirect('index.html')
+      res.redirect('/index.html')
       return;
     }
   
@@ -28,14 +28,4 @@ app.use(function(req, res, next){
     // default to plain-text. send()
     res.type('txt').send('Not found');
   });
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-
-
-routes(app);
-
 module.exports = app;

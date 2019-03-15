@@ -1,59 +1,136 @@
-var user, y;
+const host = 'http://localhost:5000/';
+
+const endPoints = {
+    signIn: `${host}login`,
+    signUp: `${host}signup`,
+}
+
+var config = {
+    apiKey: "AIzaSyDppDNnKEqYig7HNfhNI4Smu7ORLeEGAls",
+    authDomain: "always-konnected.firebaseapp.com",
+    databaseURL: "https://always-konnected.firebaseio.com",
+    projectId: "always-konnected",
+    storageBucket: "always-konnected.appspot.com",
+    messagingSenderId: "631248488335"
+};
+  firebase.initializeApp(config);
+
+var isLogin = false;
+
+$('#btnLogin').click((e) => {
+    e.preventDefault();
+    console.log('Logando');
+    signInFirebase();
+})
+
+$('#btnSignUp').click(e=>{
+    e.preventDefault();
+    if($('form').attr('ak-type') == "user")
+        signUpUser();
+    else if($('form').attr('ak-type') == "company")
+        signUpCompany();
+});
 
 
-const signUpFirebase = () => {
-    let email, password, password2, name, lastName;
+const signUpCompany = () => {
+    var company = {}
+    company.companyTaxId = $('#cnpj').val();
+    company.name = $('#name').val();
+    company.phone = $('#phone').val();
+    company.email = $('#email').val();
+    company.accessLevel = 100
 
-    name = $('#sign-up-firstName').val();
-    lastName = $('#sign-up-lastName').val();
-    email = $('#sign-up-email').val();
-    password = $('#sign-up-password').val();
-    password2 = $('#sign-up-password2').val();
+    let options = {
+        headers: {'Content-type': 'application/json'},
+        method: 'POST',
+        body: JSON.stringify(company)
+    }
 
-    if(!(password === password2)){
-        alert('Senhas não conferem');
+    fetch(endPoints.signUp, options)
+        .then(res => {
+            console.log(res);
+            window.location.replace('/login.html');
+        })
+        .catch(err=>{
+            console.error('Falha ao cadastrar empresa AK', `${err.code} - ${err.message}`);
+        })
+
+}
+
+const signUpUser = () => {
+    if($('#password').val() !== $('#confirmPassword').val()){
+        console.log('Senhas precisam ser iguais');
         return;
     }
 
-    console.log(email);
-    firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(res =>{
-            let user = res.user;
+    var user = {}
+    user.companyTaxId = $('#cnpj').val();
+    user.firstName = $('#firstName').val();
+    user.lastName = $('#lastName').val();
+    user.email = $('#email').val();
+    user.password = $('#password').val();
+    user.accessLevel = 0;
 
-            let ref = firebase.database().ref().child("user");
-            let data = {
-                email: email,
-                password: password,
-                firstName: name,
-                lastName: lastName,
-                id:user.uid
+    let options = {
+        headers: {'Content-type': 'application/json'},
+        method: 'POST',
+        body: JSON.stringify(user)
+    }
+
+    console.log(options);
+    fetch(endPoints.signUp, options)
+        .then(res => {
+            console.log(res);
+
+            if(res.status == 200)
+                window.location.replace('/login.html');
+            else{
+                res.json().then(console.log)
             }
-            ref
-                .child(user.uid)
-                .set(data)
-                .then(ref  => {//use 'child' and 'set' combination to save data in your own generated key
-                    console.log("Saved");
-                }) 
-                .catch(console.log);
         })
-        .catch(console.log); 
+        .catch(err=>{
+            console.error('Falha ao cadastrar empresa AK', `${err.code} - ${err.message}`);
+        })
+    
 }
 const signInFirebase = () => {
     let email, password;
 
-    email = $('#sign-in-email').val();
-    password = $('#sign-in-password').val();
+    email = $('#inputEmail').val();
+    password = $('#inputPassword').val();
 
     firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .then(console.log)
+        .then(()=> isLogin=true)
         .catch(err => {
-            alert(`Falha ao logar - ${err.code} - ${err.message}`);
-            console.log(err);
+            console.error('Falha ao logar', `${err.code} - ${err.message}`);
         }); 
 }
+
+firebase.auth().onAuthStateChanged(async user=>{
+    localStorage.setItem('fbToken', user);
+    if(!user || !isLogin)
+        return;
+    isLogin = false;
+    user.getIdToken()
+        .then(token =>{
+            let options = {
+                headers: {'Content-type': 'application/json'},
+                method: 'POST',
+                body: JSON.stringify({token})
+            }
+            
+            fetch(endPoints.signIn, options)
+                .then(res => {
+                    console.log(res);
+                    //window.location.replace('/main.html');
+                })
+                .catch(err=>{
+                    console.error('Falha ao logar AK', `${err.code} - ${err.message}`);
+                    firebase.auth().signOut();
+                })
+        })
+});
 
 const getActiveTab = () => $('div.active')[0].id;

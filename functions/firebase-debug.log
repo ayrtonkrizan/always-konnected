@@ -1,0 +1,39 @@
+[debug] [2019-02-09T04:16:29.313Z] ----------------------------------------------------------------------
+[debug] [2019-02-09T04:16:29.317Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve
+[debug] [2019-02-09T04:16:29.317Z] CLI Version:   6.3.1
+[debug] [2019-02-09T04:16:29.317Z] Platform:      darwin
+[debug] [2019-02-09T04:16:29.317Z] Node Version:  v8.11.1
+[debug] [2019-02-09T04:16:29.318Z] Time:          Sat Feb 09 2019 02:16:29 GMT-0200 (-02)
+[debug] [2019-02-09T04:16:29.318Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-02-09T04:16:29.336Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-02-09T04:16:29.336Z] > authorizing via signed-in user
+[debug] [2019-02-09T04:16:29.336Z] [iam] checking project always-konnected for permissions ["firebase.projects.get"]
+[debug] [2019-02-09T04:16:29.338Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-02-09T04:16:29.338Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2019-02-09T04:16:29.605Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-09T04:16:29.630Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/always-konnected:testIamPermissions  
+
+[debug] [2019-02-09T04:16:30.858Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-09T04:16:30.862Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/always-konnected  
+ 
+[debug] [2019-02-09T04:16:31.878Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/ayrtonkrizan/Developments/paginas/AlwaysKonnected'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2019-02-09T04:16:33.511Z] Fetching environment
+[debug] [2019-02-09T04:16:33.518Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/631248488335:getServerAppConfig  
+ 
+[debug] [2019-02-09T04:16:33.519Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/631248488335/clients/_:getWebAppConfig  
+ 
+[debug] [2019-02-09T04:16:34.138Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] ✔  hosting: Local server: http://localhost:5000
+[debug] [2019-02-09T04:16:34.847Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-09T04:16:34.848Z] Starting @google-cloud/functions-emulator
+[debug] [2019-02-09T04:16:36.941Z] Parsing function triggers
+[info] ✔  functions: api: http://localhost:5001/always-konnected/us-central1/api
+[info] [hosting] Rewriting /signup to local function api
+[info] [hosting] Rewriting /signup to local function api

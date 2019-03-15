@@ -1,3 +1,4 @@
+const polyfills = require('./etc/polyfills');
 const functions = require('firebase-functions');
 const app = require('./config/express');
 
